@@ -1,0 +1,383 @@
+<!-- dashboard.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Lab Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
+        }
+        .dashboard-card {
+            background: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.05);
+        }
+        .nav-active {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(99, 102, 241, 0.01) 100%);
+            border-left: 3px solid #6366f1;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside class="fixed inset-y-0 left-0 w-64 bg-white shadow-lg z-30">
+            <div class="flex flex-col h-full">
+                <!-- Logo -->
+                <div class="p-6">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-flask text-indigo-600 text-2xl"></i>
+                        <span class="text-xl font-bold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
+                            LabSystem
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <nav class="flex-1 p-4 space-y-2">
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-700 nav-active rounded-lg transition-all">
+                        <i class="fas fa-home text-indigo-600 mr-3"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </nav>
+
+                <!-- User Profile -->
+                <div class="p-4 border-t">
+                    <div class="flex items-center p-3 bg-gray-50 rounded-xl">
+                        <img src="https://ui-avatars.com/api/?name=User&background=6366f1&color=fff" 
+                             class="w-10 h-10 rounded-lg shadow-sm">
+                        <div class="ml-3">
+                            <p class="text-sm font-medium" id="currentUser">User Name</p>
+                            <p class="text-xs text-gray-500">Student</p>
+                        </div>
+                        <button id="logoutBtn" class="ml-auto text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 ml-64 min-h-screen">
+            <!-- Top Bar -->
+            <div class="bg-white shadow-sm">
+                <div class="max-w-7xl mx-auto px-8 py-4">
+                    <div class="flex items-center justify-between">
+                        <h1 class="text-2xl font-semibold text-gray-800">Dashboard</h1>
+                        <div class="flex items-center space-x-4">
+                            <button class="p-2 text-gray-400 hover:text-gray-600 relative">
+                                <i class="fas fa-bell text-xl"></i>
+                                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                            </button>
+                            <button class="p-2 text-gray-400 hover:text-gray-600">
+                                <i class="fas fa-cog text-xl"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page Content -->
+            <div class="max-w-7xl mx-auto px-8 py-8">
+                <!-- Statistics Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <!-- Total Equipment Card -->
+                    <div class="dashboard-card rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h2 class="text-sm font-medium text-gray-500">Total Equipment</h2>
+                                <div class="mt-2 flex items-baseline">
+                                    <p class="text-3xl font-bold text-gray-900" id="totalEquipment">20</p>
+                                    <p class="ml-2 text-sm text-green-500 font-medium">
+                                        <i class="fas fa-arrow-up text-xs mr-1"></i>
+                                        <span>5%</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-box text-indigo-600 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Available Card -->
+                    <div class="dashboard-card rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h2 class="text-sm font-medium text-gray-500">Available</h2>
+                                <div class="mt-2 flex items-baseline">
+                                    <p class="text-3xl font-bold text-gray-900" id="availableEquipment">15</p>
+                                    <p class="ml-2 text-sm text-green-500 font-medium">
+                                        <i class="fas fa-check text-xs mr-1"></i>
+                                        <span>Ready</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Borrowed Card -->
+                    <div class="dashboard-card rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h2 class="text-sm font-medium text-gray-500">Borrowed</h2>
+                                <div class="mt-2 flex items-baseline">
+                                    <p class="text-3xl font-bold text-gray-900" id="borrowedEquipment">5</p>
+                                    <p class="ml-2 text-sm text-yellow-500 font-medium">
+                                        <i class="fas fa-clock text-xs mr-1"></i>
+                                        <span>Active</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="w-12 h-12 bg-yellow-50 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-hand-holding text-yellow-600 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Active Trainings Card -->
+                    <div class="dashboard-card rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h2 class="text-sm font-medium text-gray-500">Active Trainings</h2>
+                                <div class="mt-2 flex items-baseline">
+                                    <p class="text-3xl font-bold text-gray-900" id="activeTrainings">3</p>
+                                    <p class="ml-2 text-sm text-purple-500 font-medium">
+                                        <i class="fas fa-graduation-cap text-xs mr-1"></i>
+                                        <span>Ongoing</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-chalkboard-teacher text-purple-600 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <!-- Equipment List -->
+                    <div class="lg:w-2/3">
+                        <div class="dashboard-card rounded-2xl">
+                            <div class="p-6 border-b border-gray-100">
+                                <div class="flex items-center justify-between">
+                                    <h2 class="text-lg font-semibold text-gray-800">Equipment List</h2>
+                                    <div class="flex items-center space-x-4">
+                                        <div class="relative">
+                                            <input type="text" 
+                                                   placeholder="Search equipment..." 
+                                                   class="pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                        </div>
+                                        <select class="px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                            <option value="all">All Categories</option>
+                                            <option value="electronics">Electronics</option>
+                                            <option value="mechanical">Mechanical</option>
+                                            <option value="tools">Tools</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="p-6">
+                                <div class="overflow-x-auto">
+                                    <table class="min-w-full">
+                                        <thead>
+                                            <tr class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                <th class="px-6 py-3">Code</th>
+                                                <th class="px-6 py-3">Name</th>
+                                                <th class="px-6 py-3">Status</th>
+                                                <th class="px-6 py-3">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="equipmentList" class="divide-y divide-gray-100">
+                                            <!-- Equipment items will be inserted here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Borrow Form -->
+                    <div class="lg:w-1/3">
+                        <div id="borrowForm" class="dashboard-card rounded-2xl">
+                            <div class="p-6 border-b border-gray-100">
+                                <h2 class="text-lg font-semibold text-gray-800">Borrow Equipment</h2>
+                            </div>
+                            <form id="equipmentBorrowForm" class="p-6 space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Equipment Code</label>
+                                    <div class="relative">
+                                        <input type="text" id="equipmentCode" required
+                                               class="pl-10 w-full rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 py-2">
+                                        <i class="fas fa-barcode absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Duration (hours)</label>
+                                    <div class="relative">
+                                        <input type="number" id="duration" required min="1"
+                                               class="pl-10 w-full rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 py-2">
+                                        <i class="fas fa-clock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Purpose</label>
+                                    <div class="relative">
+                                        <textarea id="purpose" required rows="4"
+                                                  class="pl-10 w-full rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 py-2"></textarea>
+                                        <i class="fas fa-pencil-alt absolute left-3 top-3 text-gray-400"></i>
+                                    </div>
+                                </div>
+
+                                <button type="submit"
+                                    class="w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-3 px-4 rounded-xl font-medium hover:opacity-90 transform hover:scale-[0.99] transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 flex items-center justify-center">
+                                    <i class="fas fa-paper-plane mr-2"></i>
+                                    Submit Borrow Request
+                                </button>
+                            </form>
+                        </div>
+ 
+                        <!-- Recent Activity Card -->
+                        <div class="dashboard-card rounded-2xl mt-6">
+                            <div class="p-6 border-b border-gray-100">
+                                <h2 class="text-lg font-semibold text-gray-800">Recent Activity</h2>
+                            </div>
+                            <div class="p-6">
+                                <div class="space-y-4">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
+                                            <i class="fas fa-arrow-right text-blue-500"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <p class="text-sm text-gray-600">Borrowed Oscilloscope</p>
+                                            <p class="text-xs text-gray-400">2 hours ago</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center">
+                                            <i class="fas fa-check text-green-500"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <p class="text-sm text-gray-600">Returned Multimeter</p>
+                                            <p class="text-xs text-gray-400">5 hours ago</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-8 h-8 bg-yellow-50 rounded-lg flex items-center justify-center">
+                                            <i class="fas fa-clock text-yellow-500"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <p class="text-sm text-gray-600">Extended borrowing duration</p>
+                                            <p class="text-xs text-gray-400">Yesterday</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+ 
+    <!-- Notifications Modal -->
+    <div id="notificationsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40">
+        <div class="absolute right-0 top-16 mr-4 w-80 bg-white rounded-2xl shadow-xl">
+            <div class="p-4 border-b border-gray-100">
+                <h3 class="text-lg font-semibold text-gray-800">Notifications</h3>
+            </div>
+            <div class="p-4 max-h-96 overflow-y-auto">
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-8 h-8 bg-red-50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-exclamation-circle text-red-500"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-gray-800">Equipment Due Soon</p>
+                            <p class="text-xs text-gray-500">Oscilloscope is due in 1 hour</p>
+                            <p class="text-xs text-gray-400 mt-1">10 minutes ago</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-check-circle text-green-500"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-gray-800">Borrowing Approved</p>
+                            <p class="text-xs text-gray-500">Your request for Multimeter has been approved</p>
+                            <p class="text-xs text-gray-400 mt-1">1 hour ago</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40">
+        <div class="absolute right-0 top-16 mr-4 w-80 bg-white rounded-2xl shadow-xl">
+            <div class="p-4 border-b border-gray-100">
+                <h3 class="text-lg font-semibold text-gray-800">Settings</h3>
+            </div>
+            <div class="p-4">
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-700">Notifications</span>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-700">Email Updates</span>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+    <!-- Success Toast -->
+    <div id="successToast" class="fixed bottom-4 right-4 bg-white rounded-xl shadow-lg p-4 hidden transform transition-all duration-300 max-w-xs">
+        <div class="flex items-center space-x-4">
+            <div class="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center">
+                <i class="fas fa-check text-green-500"></i>
+            </div>
+            <div class="flex-1">
+                <p class="text-sm font-medium text-gray-800" id="toastMessage"></p>
+            </div>
+            <button onclick="hideToast()" class="text-gray-400 hover:text-gray-600">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+ 
+    <script src="js/dashboard.js"></script>
+ </body>
+ </html>
