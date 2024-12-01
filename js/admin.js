@@ -6,9 +6,29 @@ class AdminPanel {
     initialize() {
         this.loadUserInfo();
         this.loadStatistics();
+        this.initializeEquipments(); 
         this.loadEquipments();
         this.loadActiveBorrowings();
         this.initializeEventListeners();
+    }
+
+    initializeEquipments() {
+        const defaultEquipments = [
+            { code: 'EQ001', name: 'Pulse Meter', status: 'available', category: 'Fisiologi', price: 10000 },
+            { code: 'EQ002', name: 'Blood Pressure Monitor', status: 'available', category: 'Fisiologi', price: 10000 },
+            { code: 'EQ003', name: '3 Infrared Ear Thermometer', status: 'available', category: 'Fisiologi', price: 10000 },
+            { code: 'EQ004', name: 'Hand Dynamometer', status: 'available', category: 'Fisiologi', price: 10000 },
+            { code: 'EQ005', name: 'Heart Rate Monitor (Polar Vantage V2)', status: 'available', category: 'Fisiologi', price: 10000 },
+            { code: 'EQ006', name: 'Spirometer', status: 'available', category: 'Fisiologi', price: 10000 },
+            { code: 'EQ007', name: 'Actiwatch Spectrum Plus', status: 'available', category: 'Fisiologi', price: 10000 },
+            { code: 'EQ008', name: 'Digital Force Gauge', status: 'available', category: 'Fisiologi', price: 10000 },
+            { code: 'EQ009', name: 'Galvanic Skin Response', status: 'available', category: 'Fisiologi', price: 10000 },
+            { code: 'EQ010', name: 'Heart Rate Monitor (Polar Ignite)', status: 'available', category: 'Fisiologi', price: 10000 }
+        ];
+    
+        if (!localStorage.getItem('equipments')) {
+            localStorage.setItem('equipments', JSON.stringify(defaultEquipments));
+        }
     }
 
     loadUserInfo() {
@@ -57,6 +77,9 @@ class AdminPanel {
                         ${this.getStatusStyle(equipment.status)}">
                         ${this.capitalizeFirstLetter(equipment.status)}
                     </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900">Rp ${Number(equipment.price).toLocaleString('id-ID')}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <button onclick="adminPanel.editEquipment('${equipment.code}')"
@@ -190,10 +213,9 @@ class AdminPanel {
                             <label class="block text-sm font-medium text-gray-700">Category</label>
                             <select id="editCategory" required
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                                <option value="Electronics" ${equipment.category === 'Electronics' ? 'selected' : ''}>Electronics</option>
-                                <option value="Mechanics" ${equipment.category === 'Mechanics' ? 'selected' : ''}>Mechanics</option>
-                                <option value="Optics" ${equipment.category === 'Optics' ? 'selected' : ''}>Optics</option>
-                                <option value="Tools" ${equipment.category === 'Tools' ? 'selected' : ''}>Tools</option>
+                                <option value="Fisiologi" ${equipment.category === 'Fisiologi' ? 'selected' : ''}>Fisiologi</option>
+                                <option value="Lingkungan Fisik" ${equipment.category === 'Lingkungan Fisik' ? 'selected' : ''}>Lingkungan Fisik</option>
+                                <option value="Kognitif" ${equipment.category === 'Kognitif' ? 'selected' : ''}>Kognitif</option>
                             </select>
                         </div>
                         <div>
@@ -204,6 +226,12 @@ class AdminPanel {
                                 <option value="borrowed" ${equipment.status === 'borrowed' ? 'selected' : ''}>Borrowed</option>
                                 <option value="maintenance" ${equipment.status === 'maintenance' ? 'selected' : ''}>Maintenance</option>
                             </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Price</label>
+                            <input type="number" id="editPrice" required
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                                value="${equipment.price}">
                         </div>
                         <div class="flex justify-end space-x-4 mt-6">
                             <button type="button" onclick="this.closest('.fixed').remove()" 
@@ -229,18 +257,22 @@ class AdminPanel {
                     code: document.getElementById('editCode').value,
                     name: document.getElementById('editName').value,
                     category: document.getElementById('editCategory').value,
-                    status: document.getElementById('editStatus').value
+                    status: document.getElementById('editStatus').value,
+                    price: document.getElementById('editPrice').value
                 };
 
                 // Update equipment in storage
                 const equipmentIndex = equipments.findIndex(e => e.code === code);
                 if (equipmentIndex !== -1) {
-                    equipments[equipmentIndex] = updatedEquipment;
+                    equipments[equipmentIndex] = {
+                        ...equipments[equipmentIndex],  // Mempertahankan properti lain
+                        ...updatedEquipment  // Update dengan data baru
+                    };
                     localStorage.setItem('equipments', JSON.stringify(equipments));
                     
                     // Refresh display
-                    this.loadEquipments();
-                    this.loadStatistics();
+                    this.loadEquipments();  // Memuat ulang daftar equipment
+                    this.loadStatistics();  // Memuat ulang statistik
                     modal.remove();
                     alert('Equipment updated successfully!');
                 }
@@ -262,28 +294,30 @@ class AdminPanel {
         const code = document.getElementById('equipmentCode').value;
         const name = document.getElementById('equipmentName').value;
         const category = document.getElementById('equipmentCategory').value;
-
+        const price = document.getElementById('equipmentPrice').value;
+    
         let equipments = JSON.parse(localStorage.getItem('equipments') || '[]');
-
+    
         if (equipments.some(e => e.code === code)) {
-            alert('Equipment code already exists');
+            alert('Kode peralatan sudah ada');
             return;
         }
-
+    
         const newEquipment = {
             code,
             name,
             category,
-            status: 'available'
+            status: 'available',
+            price
         };
-
+    
         equipments.push(newEquipment);
         localStorage.setItem('equipments', JSON.stringify(equipments));
-
+    
         this.hideAddEquipmentForm();
         this.loadEquipments();
         this.loadStatistics();
-        alert('Equipment added successfully!');
+        alert('Peralatan berhasil ditambahkan!');
     }
 
     deleteEquipment(code) {

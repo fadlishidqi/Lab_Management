@@ -1,14 +1,16 @@
 class Dashboard {
     constructor() {
         this.equipments = [
-            { code: 'EQ001', name: 'Oscilloscope', status: 'available', category: 'Electronics' },
-            { code: 'EQ002', name: 'Digital Multimeter', status: 'available', category: 'Electronics' },
-            { code: 'EQ003', name: 'Function Generator', status: 'available', category: 'Electronics' },
-            { code: 'EQ004', name: 'Power Supply', status: 'available', category: 'Electronics' },
-            { code: 'EQ005', name: 'Microscope', status: 'available', category: 'Optics' },
-            { code: 'EQ006', name: 'Spectrum Analyzer', status: 'available', category: 'Electronics' },
-            { code: 'EQ007', name: 'Logic Analyzer', status: 'available', category: 'Electronics' },
-            { code: 'EQ008', name: 'PCB Design Kit', status: 'available', category: 'Electronics' }
+            { code: 'EQ001', name: 'Pulse Meter', status: 'available', category: 'Fisiologi', price: '10000' },
+            { code: 'EQ002', name: 'Blood Pressure Monitor', status: 'available', category: 'Fisiologi', price: '10000' },
+            { code: 'EQ003', name: '3	Infrared Ear Thermometer', status: 'available', category: 'Fisiologi', price: '10000' },
+            { code: 'EQ004', name: 'Hand Dynamometer', status: 'available', category: 'Fisiologi', price: '10000' },
+            { code: 'EQ005', name: 'Heart Rate Monitor (Polar Vantage V2)', status: 'available', category: 'Fisiologi', price: '10000' },
+            { code: 'EQ006', name: 'Spirometer', status: 'available', category: 'Fisiologi', price: '15000' },
+            { code: 'EQ007', name: 'Actiwatch Spectrum Plus', status: 'available', category: 'Fisiologi', price: '15000' },
+            { code: 'EQ008', name: 'Digital Force Gauge', status: 'available', category: 'Fisiologi', price: '15000' },
+            { code: 'EQ009', name: 'Galvanic Skin Response', status: 'available', category: 'Fisiologi', price: '15000' },
+            { code: 'EQ010', name: 'Heart Rate Monitor (Polar Ignite)', status: 'available', category: 'Fisiologi', price: '15000' }
         ];
         this.initialize();
     }
@@ -56,10 +58,12 @@ class Dashboard {
                     <div class="text-sm text-gray-900">${equipment.category}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                        ${this.getStatusStyle(equipment.status)}">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${this.getStatusStyle(equipment.status)}">
                         ${equipment.status}
                     </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900">Rp ${Number(equipment.price).toLocaleString('id-ID')}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     ${this.getActionButton(equipment)}
